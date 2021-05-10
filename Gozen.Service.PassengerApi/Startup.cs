@@ -1,18 +1,19 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
-using NLog;
-using Microsoft.EntityFrameworkCore;
 using Gozen.Business.Passenger;
 using Gozen.Business.Passenger.Concreates;
 using Gozen.Business.Passenger.Strategy;
 using Gozen.Data;
 using Gozen.Data.Repositories;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using NLog;
 
 namespace Gozen.Service.PassengerApi
 {
@@ -28,22 +29,25 @@ namespace Gozen.Service.PassengerApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GozenDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<GozenDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             GlobalDiagnosticsContext.Set("LogConnection", Configuration.GetConnectionString("LogConnection"));
 
             services.AddScoped<IPassengerRepository, PassengerRepository>();
 
-            services.AddTransient<IPassengerManager, OfflinePassengerManager>();
+            services.AddScoped<IPassengerManager, OfflinePassengerManager>();
             services.AddTransient<IPassengerManager, OnlinePassengerManager>();
-            services.AddTransient<IPassengerOperation, PassengerOperation>();
+            services.AddScoped<IPassengerOperation, PassengerOperation>();
 
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+            services.AddMvc();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
             services.AddSwaggerGen(c =>
             {
@@ -51,6 +55,7 @@ namespace Gozen.Service.PassengerApi
             });
 
             #region Mapster
+
             /*
             services.AddMapster(options =>
               {
@@ -58,6 +63,7 @@ namespace Gozen.Service.PassengerApi
                 TypeAdapterConfig.GlobalSettings.Default.IgnoreNonMapped(true); // Does not work.
             }); 
             */
+
             #endregion
 
             services.AddMemoryCache();
@@ -67,6 +73,7 @@ namespace Gozen.Service.PassengerApi
             services.AddCors();
 
             #region OtherConfig
+
             /*
             var appSettingsSection = Configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -93,6 +100,7 @@ namespace Gozen.Service.PassengerApi
                 };
             });
             */
+
             #endregion
         }
 
@@ -115,10 +123,8 @@ namespace Gozen.Service.PassengerApi
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            //app.UseMvc();
 
             app.UseCors();
         }

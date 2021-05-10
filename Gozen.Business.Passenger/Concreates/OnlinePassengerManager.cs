@@ -11,10 +11,10 @@ namespace Gozen.Business.Passenger.Concreates
     public class OnlinePassengerManager : IPassengerManager
     {
         private readonly IPassengerRepository _passengerRepository;
+
         public OnlinePassengerManager(IPassengerRepository passengerRepository)
         {
             _passengerRepository = passengerRepository;
-
         }
 
         public async Task<List<PassengerDto>> ListPassengers()
@@ -28,6 +28,7 @@ namespace Gozen.Business.Passenger.Concreates
                     var passengerDto = passenger.Adapt(new PassengerDto());
                     result.Add(passengerDto);
                 }
+
                 return result;
             }
             catch (Exception e)
@@ -37,10 +38,18 @@ namespace Gozen.Business.Passenger.Concreates
             }
         }
 
-        public async Task<PassengerDto> ShowPassengerInfo(int pId)
+        public async Task<PassengerDto> ShowPassengerInfo(int id)
         {
-            var passenger = await _passengerRepository.GetByIdAsync(pId);
-            return passenger.Adapt(new PassengerDto());
+            try
+            {
+                var passenger = await _passengerRepository.GetByIdAsync(id);
+                return passenger.Adapt(new PassengerDto());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<bool> AddNewPassenger(PassengerDto p)
@@ -67,6 +76,7 @@ namespace Gozen.Business.Passenger.Concreates
                     var updatedPassenger = p.Adapt(passenger);
                     return await _passengerRepository.UpdateAsync(updatedPassenger);
                 }
+
                 return false;
             }
             catch (Exception e)
@@ -76,16 +86,17 @@ namespace Gozen.Business.Passenger.Concreates
             }
         }
 
-        public async Task<bool> RemovePassenger(int passengerId)
+        public async Task<bool> RemovePassenger(int id)
         {
             try
             {
-                var passenger = await _passengerRepository.GetByIdAsync(passengerId);
+                var passenger = await _passengerRepository.GetByIdAsync(id);
                 if (passenger != null)
                 {
                     passenger.IsActive = false;
                     return await _passengerRepository.UpdateAsync(passenger);
                 }
+
                 return false;
             }
             catch (Exception e)

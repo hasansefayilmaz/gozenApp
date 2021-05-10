@@ -65,7 +65,7 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
                         });
                 });
 
-            modelBuilder.Entity("Gozen.Data.Tables.Passenger", b =>
+            modelBuilder.Entity("Gozen.Data.Tables.PassengerDto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
 
                     b.HasIndex("DocumentTypeId");
 
-                    b.ToTable("Passenger");
+                    b.ToTable("PassengerDto");
 
                     b.HasData(
                         new
@@ -173,10 +173,10 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
                         });
                 });
 
-            modelBuilder.Entity("Gozen.Data.Tables.Passenger", b =>
+            modelBuilder.Entity("Gozen.Data.Tables.PassengerDto", b =>
                 {
                     b.HasOne("Gozen.Data.Tables.DocumentType", "DocumentType")
-                        .WithMany("Passenger")
+                        .WithMany("PassengerDto")
                         .HasForeignKey("DocumentTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -186,7 +186,7 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
 
             modelBuilder.Entity("Gozen.Data.Tables.DocumentType", b =>
                 {
-                    b.Navigation("Passenger");
+                    b.Navigation("PassengerDto");
                 });
 #pragma warning restore 612, 618
         }

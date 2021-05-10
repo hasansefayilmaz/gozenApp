@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace Gozen.Models.DTO
 {
@@ -14,7 +13,5 @@ namespace Gozen.Models.DTO
         public DateTime IssueDate { get; set; }
         public bool IsActive { get; set; }
         public virtual DocumentTypeDto DocumentType { get; set; }
-
-
     }
 }

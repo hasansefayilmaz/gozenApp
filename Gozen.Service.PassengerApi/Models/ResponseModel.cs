@@ -1,8 +1,6 @@
-﻿
-namespace Gozen.Service.PassengerApi.Models
+﻿namespace Gozen.Service.PassengerApi.Models
 {
     public class ResponseModel
     {
-
     }
 }

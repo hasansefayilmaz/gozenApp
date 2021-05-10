@@ -1,4 +1,3 @@
-
 namespace Gozen.Web.PassengerApp.Models
 {
     public class ErrorViewModel

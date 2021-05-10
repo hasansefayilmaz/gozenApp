@@ -14,7 +14,10 @@ namespace Gozen.Data.Core
         Task<bool> SoftDeleteAsync(TEntity entity);
         Task<TEntity> GetByIdAsync(int id);
         Task<IEnumerable<TEntity>> GetAllAsync(int pageIndex = 0, int pageSize = 0);
-        Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex = 0, int pageSize = 0);
+
+        Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex = 0,
+            int pageSize = 0);
+
         Task<bool> SaveChangesAsync();
     }
 }

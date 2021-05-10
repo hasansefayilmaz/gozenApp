@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Gozen.Models.DTO.PassengerDto>
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<Gozen.Models.DTO.PassengerDto>
 
 @{
     ViewData["Title"] = "Passengers";
@@ -11,68 +12,68 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DocumentType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DocumentNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IssueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.Id)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.Name)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.Surname)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.Gender)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.DocumentType)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.DocumentNumber)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.IssueDate)
+        </th>
+        <th>
+            @HtmlHelperDisplayNameExtensions.DisplayNameFor(Html, model => model.IsActive)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Surname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentType.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IssueDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentType.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IssueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                @Html.ActionLink("Details", "Details", new {id = item.Id}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

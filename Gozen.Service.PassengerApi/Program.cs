@@ -1,11 +1,11 @@
+using System;
+using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
-using System;
-using System.IO;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Gozen.Service.PassengerApi

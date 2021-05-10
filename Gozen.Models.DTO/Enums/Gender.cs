@@ -1,9 +1,10 @@
-﻿
+﻿using System;
+
 namespace Gozen.Models.DTO.Enums
 {
-    public enum Gender
+    public struct Gender
     {
-        Male,
-        Female
+        public static byte Male = 0;
+        public static byte Female = 1;
     }
 }

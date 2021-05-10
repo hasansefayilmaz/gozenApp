@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{8B6723CA-A8C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gozen.Data", "Gozen.Data\Gozen.Data.csproj", "{B563CF11-82F9-407C-A853-149F9578DFFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gozen.Web.PassengerApp", "Gozen.Web.PassengerApp\Gozen.Web.PassengerApp.csproj", "{D1FC8EDD-BE93-4C9B-B9B6-A57AD4D0DD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gozen.Web.PassengerApp", "Gozen.Web.PassengerApp\Gozen.Web.PassengerApp.csproj", "{D1FC8EDD-BE93-4C9B-B9B6-A57AD4D0DD1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gozen.Business.Passenger", "Gozen.Business.Passenger\Gozen.Business.Passenger.csproj", "{2C846A8D-E00C-49B1-93B1-D849865BB171}"
 EndProject

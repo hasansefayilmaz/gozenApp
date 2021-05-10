@@ -18,6 +18,7 @@ namespace Gozen.Business.Passenger
     public class PassengerOperation : IPassengerOperation
     {
         private readonly IPassengerManager _passengerManager;
+
         public PassengerOperation(IPassengerManager passengerManager)
         {
             _passengerManager = passengerManager;
@@ -27,18 +28,22 @@ namespace Gozen.Business.Passenger
         {
             return await _passengerManager.ListPassengers();
         }
+
         public async Task<PassengerDto> ShowPassengerInfo(int passengerId)
         {
             return await _passengerManager.ShowPassengerInfo(passengerId);
         }
+
         public async Task<bool> AddNewPassenger(PassengerDto obj)
         {
             return await _passengerManager.AddNewPassenger(obj);
         }
+
         public async Task<bool> ChangePassengerInfo(PassengerDto obj)
         {
             return await _passengerManager.ChangePassengerInfo(obj);
         }
+
         public async Task<bool> RemovePassenger(int passengerId)
         {
             return await _passengerManager.RemovePassenger(passengerId);

@@ -19,7 +19,7 @@ namespace Gozen.Service.PassengerApi.Helpers
                     Description = "Terminal Communications",
                     Contact = new OpenApiContact
                     {
-                        Name = "Gozen.Service.Passenger.Api",
+                        Name = "Gozen.Service.PassengerDto.Api",
                         Url = new Uri("http://www.galaksity.com"),
                         Email = "info@galaksity.com"
                     },
@@ -32,7 +32,7 @@ namespace Gozen.Service.PassengerApi.Helpers
                     Type = SecuritySchemeType.ApiKey,
                     In = ParameterLocation.Header
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme

@@ -1,7 +1,7 @@
-﻿using Gozen.Web.PassengerApp.Models;
+﻿using System.Diagnostics;
+using Gozen.Web.PassengerApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
 namespace Gozen.Web.PassengerApp.Controllers
 {
@@ -23,7 +23,7 @@ namespace Gozen.Web.PassengerApp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

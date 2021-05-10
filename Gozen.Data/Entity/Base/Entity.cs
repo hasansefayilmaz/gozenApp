@@ -8,7 +8,6 @@ namespace Gozen.Data.Entity.Base
     public class Entity : IEntity<int>
     {
         [Key]
-        [Column]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -17,7 +16,7 @@ namespace Gozen.Data.Entity.Base
         [Column]
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime IssueDate { get; set; } = DateTime.UtcNow;
-        [Column]
+
         public bool IsActive { get; set; } = true;
     }
 }

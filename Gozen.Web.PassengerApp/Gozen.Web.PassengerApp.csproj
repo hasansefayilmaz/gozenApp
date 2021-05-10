@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="ApiProvider\**" />
+    <Compile Remove="FakesAssemblies\**" />
     <Content Remove="ApiProvider\**" />
+    <Content Remove="FakesAssemblies\**" />
     <EmbeddedResource Remove="ApiProvider\**" />
+    <EmbeddedResource Remove="FakesAssemblies\**" />
     <None Remove="ApiProvider\**" />
+    <None Remove="FakesAssemblies\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +29,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gozen.Models.DTO\Gozen.Models.DTO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalDesignTimeBuildInput Remove="FakesAssemblies\**" />
   </ItemGroup>
 
 </Project>

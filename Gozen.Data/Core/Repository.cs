@@ -33,7 +33,6 @@ namespace Gozen.Data.Core
                 Console.WriteLine(e);
                 return false;
             }
-
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)
@@ -43,10 +42,7 @@ namespace Gozen.Data.Core
                 _context.Set<TEntity>().Attach(entity);
                 var entry = _context.Entry(entity);
                 entry.State = EntityState.Modified;
-                if (entry.Property("IssueDate") != null)
-                {
-                    entry.Property("IssueDate").IsModified = false;
-                }
+                if (entry.Property("IssueDate") != null) entry.Property("IssueDate").IsModified = false;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -79,12 +75,15 @@ namespace Gozen.Data.Core
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(int pageIndex = 0, int pageSize = 0)
         {
-            return await _context.Set<TEntity>().Where(c => c.IsActive).OrderByDescending(c => c.Id).Skip(pageIndex * pageSize).ToListAsync();
+            return await _context.Set<TEntity>().Where(c => c.IsActive).OrderByDescending(c => c.Id)
+                .Skip(pageIndex * pageSize).ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, int pageIndex = 0, int pageSize = 0)
+        public async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate,
+            int pageIndex = 0, int pageSize = 0)
         {
-            return await _context.Set<TEntity>().Where(predicate).OrderByDescending(c => c.Id).Skip(pageIndex * pageSize).ToListAsync();
+            return await _context.Set<TEntity>().Where(predicate).OrderByDescending(c => c.Id)
+                .Skip(pageIndex * pageSize).ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
@@ -92,6 +91,5 @@ namespace Gozen.Data.Core
             await _context.SaveChangesAsync();
             return true;
         }
-
     }
 }

@@ -5,17 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
-    <Compile Remove="Helpers\AppException.cs" />
-    <Compile Remove="Helpers\AppSettings.cs" />
-    <Compile Remove="Helpers\ExceptionMiddlewareExtensions.cs" />
-    <Compile Remove="Helpers\RequiredFromQueryActionConstraint.cs" />
-    <Compile Remove="Helpers\RequiredFromQueryAttribute.cs" />
-    <Compile Remove="WeatherForecast.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

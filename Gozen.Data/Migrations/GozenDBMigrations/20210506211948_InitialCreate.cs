@@ -8,86 +8,104 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DocumentType",
-                columns: table => new
+                "DocumentType",
+                table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>("int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Type = table.Column<string>("nvarchar(max)", nullable: true),
+                    IssueDate = table.Column<DateTime>("datetime2", nullable: false),
+                    IsActive = table.Column<bool>("bit", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocumentType", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_DocumentType", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Passenger",
-                columns: table => new
+                "PassengerDto",
+                table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>("int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    DocumentTypeId = table.Column<int>(type: "int", nullable: false),
-                    DocumentNumber = table.Column<int>(type: "int", maxLength: 4, nullable: false),
-                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Name = table.Column<string>("nvarchar(50)", maxLength: 50, nullable: false),
+                    Surname = table.Column<string>("nvarchar(50)", maxLength: 50, nullable: false),
+                    Gender = table.Column<int>("int", nullable: false),
+                    DocumentTypeId = table.Column<int>("int", nullable: false),
+                    DocumentNumber = table.Column<int>("int", maxLength: 4, nullable: false),
+                    IssueDate = table.Column<DateTime>("datetime2", nullable: false),
+                    IsActive = table.Column<bool>("bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Passenger", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Passenger_DocumentType_DocumentTypeId",
-                        column: x => x.DocumentTypeId,
-                        principalTable: "DocumentType",
-                        principalColumn: "Id",
+                        "FK_Passenger_DocumentType_DocumentTypeId",
+                        x => x.DocumentTypeId,
+                        "DocumentType",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "DocumentType",
-                columns: new[] { "Id", "IsActive", "IssueDate", "Type" },
-                values: new object[] { 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(4350), "Pasaport" });
+                "DocumentType",
+                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new object[]
+                    {1, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(4350), "Pasaport"});
 
             migrationBuilder.InsertData(
-                table: "DocumentType",
-                columns: new[] { "Id", "IsActive", "IssueDate", "Type" },
-                values: new object[] { 2, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7177), "Visa" });
+                "DocumentType",
+                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new object[]
+                    {2, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7177), "Visa"});
 
             migrationBuilder.InsertData(
-                table: "DocumentType",
-                columns: new[] { "Id", "IsActive", "IssueDate", "Type" },
-                values: new object[] { 3, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7192), "Travel" });
+                "DocumentType",
+                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new object[]
+                    {3, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7192), "Travel"});
 
             migrationBuilder.InsertData(
-                table: "Passenger",
-                columns: new[] { "Id", "DocumentNumber", "DocumentTypeId", "Gender", "IsActive", "IssueDate", "Name", "Surname" },
-                values: new object[,]
+                "PassengerDto",
+                new[] {"Id", "DocumentNumber", "DocumentTypeId", "Gender", "IsActive", "IssueDate", "Name", "Surname"},
+                new object[,]
                 {
-                    { 1, 1111, 1, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 908, DateTimeKind.Utc).AddTicks(7513), "Name_1", "Surname_1" },
-                    { 4, 4444, 1, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3343), "Name_4", "Surname_4" },
-                    { 2, 2222, 2, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3323), "Name_2", "Surname_2" },
-                    { 5, 5555, 2, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3346), "Name_5", "Surname_5" },
-                    { 3, 3333, 3, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3338), "Name_3", "Surname_3" },
-                    { 6, 6666, 3, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3349), "Name_6", "Surname_6" }
+                    {
+                        1, 1111, 1, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 908, DateTimeKind.Utc).AddTicks(7513),
+                        "Name_1", "Surname_1"
+                    },
+                    {
+                        4, 4444, 1, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3343),
+                        "Name_4", "Surname_4"
+                    },
+                    {
+                        2, 2222, 2, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3323),
+                        "Name_2", "Surname_2"
+                    },
+                    {
+                        5, 5555, 2, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3346),
+                        "Name_5", "Surname_5"
+                    },
+                    {
+                        3, 3333, 3, 0, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3338),
+                        "Name_3", "Surname_3"
+                    },
+                    {
+                        6, 6666, 3, 1, true, new DateTime(2021, 5, 6, 21, 19, 47, 909, DateTimeKind.Utc).AddTicks(3349),
+                        "Name_6", "Surname_6"
+                    }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Passenger_DocumentTypeId",
-                table: "Passenger",
-                column: "DocumentTypeId");
+                "IX_Passenger_DocumentTypeId",
+                "PassengerDto",
+                "DocumentTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Passenger");
+                "PassengerDto");
 
             migrationBuilder.DropTable(
-                name: "DocumentType");
+                "DocumentType");
         }
     }
 }
