@@ -36,13 +36,13 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
 
                 var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Index/");
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -57,7 +57,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -68,14 +68,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
                 var response =
                     await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -89,7 +89,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -100,14 +100,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
 
                 var response =
                     await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -118,7 +118,7 @@ namespace Gozen.Web.PassengerApp.Controllers
                 if (!dResponse.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
                         ErrorMessage = dResponse.RequestMessage != null
                             ? dResponse.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -133,7 +133,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -145,14 +145,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
 
                 var response = await client.PostAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Create/",
                     new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -160,12 +160,12 @@ namespace Gozen.Web.PassengerApp.Controllers
 
                 var result =
                     Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
-                return result ? RedirectToAction("Index", "Passenger", new {scenario}) : View(passenger);
+                return result ? RedirectToAction("Index", "Passenger", new { scenario }) : View(passenger);
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -176,14 +176,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
 
                 var response =
                     await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -194,7 +194,7 @@ namespace Gozen.Web.PassengerApp.Controllers
                 if (!dResponse.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
                         ErrorMessage = dResponse.RequestMessage != null
                             ? dResponse.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -211,7 +211,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -223,7 +223,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
 
                 var response = await client.PutAsync(
                     client.BaseAddress + "api/" + scenario + "/Passenger/Edit/" + passenger.Id,
@@ -231,7 +231,7 @@ namespace Gozen.Web.PassengerApp.Controllers
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -239,12 +239,12 @@ namespace Gozen.Web.PassengerApp.Controllers
 
                 var result =
                     Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
-                return result ? RedirectToAction("Index", "Passenger", new {scenario}) : View(passenger);
+                return result ? RedirectToAction("Index", "Passenger", new { scenario }) : View(passenger);
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -255,14 +255,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
                 var response =
                     await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -276,7 +276,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
@@ -287,14 +287,14 @@ namespace Gozen.Web.PassengerApp.Controllers
             try
             {
                 HttpClient client = new()
-                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                { BaseAddress = new Uri(Configuration.GetConnectionString("PassengerApi")) };
                 var response =
                     await client.DeleteAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Delete/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
                         ErrorMessage = response.RequestMessage != null
                             ? response.RequestMessage.ToString()
                             : "No message delivered by the service."
@@ -303,13 +303,13 @@ namespace Gozen.Web.PassengerApp.Controllers
                 var result =
                     Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
                 return result
-                    ? RedirectToAction("Index", "Passenger", new {scenario})
-                    : RedirectToAction("Delete", "Passenger", new {scenario, id});
+                    ? RedirectToAction("Index", "Passenger", new { scenario })
+                    : RedirectToAction("Delete", "Passenger", new { scenario, id });
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
     }
