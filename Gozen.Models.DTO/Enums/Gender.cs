@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Gozen.Models.DTO.Enums
+﻿namespace Gozen.Models.DTO.Enums
 {
     public enum Gender
     {
