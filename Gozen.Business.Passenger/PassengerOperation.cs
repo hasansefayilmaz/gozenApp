@@ -12,6 +12,9 @@ namespace Gozen.Business.Passenger
         Task<bool> AddNewPassenger(PassengerDto obj);
         Task<bool> ChangePassengerInfo(PassengerDto obj);
         Task<bool> RemovePassenger(int passengerId);
+
+        Task<List<DocumentTypeDto>> GetDocumentTypes();
+
     }
 
 
@@ -47,6 +50,11 @@ namespace Gozen.Business.Passenger
         public async Task<bool> RemovePassenger(int passengerId)
         {
             return await _passengerManager.RemovePassenger(passengerId);
+        }
+
+        public async Task<List<DocumentTypeDto>> GetDocumentTypes()
+        {
+            return await _passengerManager.GetDocumentTypes();
         }
     }
 }

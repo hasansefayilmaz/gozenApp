@@ -1,4 +1,6 @@
-﻿@model Gozen.Models.DTO.PassengerDto
+﻿@using Microsoft.AspNetCore.Mvc.Routing
+@using Gozen.Models.DTO.Enums
+@model Gozen.Models.DTO.PassengerDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,61 +9,65 @@
 <h1>Edit</h1>
 
 <h4>UniqePassengerId : @Model.Id</h4>
-<hr/>
+<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-controller="Passenger">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control"/>
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" required="required" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control"/>
+                <input asp-for="Surname" class="form-control" required="required" />
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control"/>
+                <select asp-for="Gender" class="form-control" asp-items="@(new SelectList(Html.GetEnumSelectList<Gender>(),"Value","Text",Model.Gender))">
+                    <option value="">Choose Gender</option>
+                </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DocumentTypeId" class="control-label"></label>
-                <input asp-for="DocumentTypeId" class="form-control"/>
+                <label asp-for="DocumentTypeId" class="control-label">Document Type</label>
+                <select asp-for="DocumentTypeId" class="form-control" asp-items="@(new SelectList(@ViewBag.DocumentTypes,"Id","Type",Model.DocumentTypeId))">
+                    <option value="">Choose Document Type</option>
+                </select>
                 <span asp-validation-for="DocumentTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DocumentNumber" class="control-label"></label>
-                <input asp-for="DocumentNumber" class="form-control"/>
+                <input asp-for="DocumentNumber" class="form-control" type="number" maxlength="4" min="0" />
                 <span asp-validation-for="DocumentNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="IssueDate" class="control-label"></label>
-                <input asp-for="IssueDate" class="form-control"/>
-                <span asp-validation-for="IssueDate" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+                    <label asp-for="IssueDate" class="control-label"></label>
+                    <input asp-for="IssueDate" class="form-control" />
+                    <span asp-validation-for="IssueDate" class="text-danger"></span>
+                </div>*@
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive"/> @Html.DisplayNameFor(model => model.IsActive)
+                    <input type="hidden" class="form-check-input" asp-for="IsActive" />
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
+                @Html.RouteLink("Back to List", "Index", new { scenario = ViewBag.Scenario }, new { @class = "btn btn-primary my-2" }) |
+                @Html.RouteLink("Delete", "DeleteOk", new { scenario = ViewBag.Scenario, id = Model.Id }, new { @class = "btn btn-danger my-2" }) |
+                <input type="submit" value="Save" class="btn btn-success" />
+                @*<a asp-action="Index">Back to List</a>*@
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

@@ -23,6 +23,7 @@ namespace Gozen.Data.Core
             try
             {
                 entity.IssueDate = DateTime.UtcNow;
+                entity.IsActive = true;
                 _context.Set<TEntity>().Add(entity);
                 await _context.SaveChangesAsync();
 
@@ -75,7 +76,7 @@ namespace Gozen.Data.Core
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(int pageIndex = 0, int pageSize = 0)
         {
-            return await _context.Set<TEntity>().Where(c => c.IsActive).OrderByDescending(c => c.Id)
+            return await _context.Set<TEntity>().Where(c => c.IsActive).OrderBy(c => c.Id)
                 .Skip(pageIndex * pageSize).ToListAsync();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Gozen.Web.PassengerApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,14 +17,30 @@ namespace Gozen.Web.PassengerApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception.Message, exception);
+                return BadRequest(exception.Message);
+            }
         }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            try
+            {
+                return View(new ErrorViewModel { ErrorMessage = Activity.Current?.DisplayName ?? HttpContext.TraceIdentifier });
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception.Message, exception);
+                return BadRequest(exception.Message);
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Gozen.Models.DTO.Enums
 {
-    public struct Gender
+    public enum Gender
     {
-        public static byte Male = 0;
-        public static byte Female = 1;
+        Male,
+        Female
     }
 }

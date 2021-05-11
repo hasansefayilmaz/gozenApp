@@ -1,5 +1,12 @@
+using System;
+using System.IO;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Web;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Gozen.Web.PassengerApp
 {
@@ -7,13 +14,46 @@ namespace Gozen.Web.PassengerApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            GlobalDiagnosticsContext.Set("LogConnection", configuration.GetConnectionString("LogConnection"));
+
+            var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
+
+            try
+            {
+                logger.Debug("init main");
+                BuildWebHost(args).Run();
+            }
+            catch (Exception exception)
+            {
+                //NLog: catch setup errors
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                LogManager.Shutdown();
+            }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IWebHost BuildWebHost(string[] args)
         {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            return WebHost.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Error);
+                })
+                .UseStartup<Startup>()
+                //.UseIISIntegration()
+                //.UseUrls("http://0.0.0.0:5000")
+                .UseNLog()
+                .Build();
         }
     }
 }

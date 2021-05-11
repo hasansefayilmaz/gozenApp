@@ -1,192 +1,274 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Gozen.Models.DTO;
+using Gozen.Models.DTO.Enums;
 using Gozen.Web.PassengerApp.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Gozen.Web.PassengerApp.Controllers
 {
+    [Route("{scenario}/[controller]/[action]")]
     public class PassengerController : Controller
     {
-        public PassengerController(IConfiguration configuration)
+        private readonly ILogger<HomeController> _logger;
+
+        public PassengerController(IConfiguration configuration, ILogger<HomeController> logger)
         {
+            _logger = logger;
             Configuration = configuration;
         }
 
         private IConfiguration Configuration { get; }
 
         // GET: PassengerController
-        public async Task<IActionResult> Index()
+        [HttpGet("", Name = "Index")]
+        public async Task<IActionResult> Index(string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/PassengerDto/");
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Index/");
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
 
-                var result =
-                    JsonConvert.DeserializeObject<List<PassengerDto>>(response.Content.ReadAsStringAsync().Result);
+                ViewBag.Scenario = scenario;
+
+                var result = JsonConvert.DeserializeObject<List<PassengerDto>>(response.Content.ReadAsStringAsync().Result);
                 return View(result);
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel {RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
         // GET: PassengerController/Details/5
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Details(int id)
+        [HttpGet("{id:int}", Name = "Details")]
+        public async Task<IActionResult> Details(int id, string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/PassengerDto/Details/" + id);
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
+
+                ViewBag.Scenario = scenario;
 
                 var result = JsonConvert.DeserializeObject<PassengerDto>(response.Content.ReadAsStringAsync().Result);
                 return View(result);
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
         // GET: TestController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PassengerController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PassengerDto passenger)
+        [HttpGet("", Name = "Create")]
+        public async Task<IActionResult> Create(string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.PostAsync(client.BaseAddress + "api/PassengerDto/Create/",
-                    new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
 
-                var result = response.Content.ReadAsStringAsync().Result;
-                var passengers = JsonConvert.DeserializeObject<PassengerDto>(result);
+                var dResponse = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                if (!dResponse.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorMessage = dResponse.RequestMessage != null ? dResponse.RequestMessage.ToString() : "No message delivered by the service."
+                    });
 
-                return View(passengers);
+                ViewBag.DocumentTypes = JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
+                ViewBag.Scenario = scenario;
+
+                return View();
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+            }
+        }
+
+        // POST: PassengerController/Create
+        [HttpPost("")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(PassengerDto passenger, string scenario)
+        {
+            try
+            {
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+
+                var response = await client.PostAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Create/",
+                    new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
+
+                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                return result ? RedirectToAction("Index", "Passenger", new { scenario = scenario }) : View(passenger);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
         // GET: PassengerController/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet("{id:int}", Name = "Edit")]
+        public async Task<IActionResult> Edit(int id, string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/PassengerDto/Details/" + id);
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
+
+                var dResponse = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                if (!dResponse.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorMessage = dResponse.RequestMessage != null ? dResponse.RequestMessage.ToString() : "No message delivered by the service."
+                    });
+
+                ViewBag.DocumentTypes = JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
+                ViewBag.Scenario = scenario;
 
                 var result = JsonConvert.DeserializeObject<PassengerDto>(response.Content.ReadAsStringAsync().Result);
+
                 return View(result);
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
-        // POST: TestController/Edit/5
-        [HttpPost]
+        // POST: PassengerController/Edit/5
+        [HttpPost("{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(PassengerDto passenger)
+        public async Task<IActionResult> Edit(PassengerDto passenger, string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.PutAsync(client.BaseAddress + "api/PassengerDto/Edit/" + passenger.Id,
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+
+                var response = await client.PutAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Edit/" + passenger.Id,
                     new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
-
-                var result = response.Content.ReadAsStringAsync().Result;
-                var passengers = JsonConvert.DeserializeObject<PassengerDto>(result);
-
-                return View();
+                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                return result ? RedirectToAction("Index", "Passenger", new { scenario = scenario }) : View(passenger);
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
-        // GET: TestController/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        // GET: PassengerController/Delete/5
+        [HttpGet("{id:int}", Name = "Delete")]
+        public async Task<IActionResult> Delete(int id, string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/PassengerDto/Details/" + id);
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
+
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
+
+                ViewBag.Scenario = scenario;
 
                 var result = JsonConvert.DeserializeObject<PassengerDto>(response.Content.ReadAsStringAsync().Result);
                 return View(result);
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
 
-        // POST: PassengerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, IFormCollection formCollection)
+        // GET: PassengerController/Delete/5
+        [HttpGet("{id:int}", Name = "DeleteOk")]
+        public async Task<IActionResult> DeleteOk(int id, string scenario)
         {
             try
             {
-                HttpClient client = new()
-                { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/PassengerDto/Delete/" + id);
+                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                var response = await client.DeleteAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Delete/" + id);
 
-                if (!response.IsSuccessStatusCode) 
-                    return View("Error", new ErrorViewModel { RequestId = string.IsNullOrEmpty(response.ReasonPhrase) ? response.ReasonPhrase : "Service is not reachable !" });
+                if (!response.IsSuccessStatusCode)
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                    });
 
-                var result = response.Content.ReadAsStringAsync().Result;
-                var passengers = JsonConvert.DeserializeObject<PassengerDto>(result);
-
-                return View(passengers);
+                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                return result
+                    ? RedirectToAction("Index", "Passenger", new { scenario = scenario })
+                    : RedirectToAction("Delete", "Passenger", new { scenario = scenario, id = id });
             }
-            catch
+            catch (Exception exception)
             {
-                return View("Error", new ErrorViewModel { RequestId = "An error occurred during the process !" });
+                _logger.LogCritical(exception.Message, exception);
+                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
             }
         }
     }

@@ -33,13 +33,14 @@ namespace Gozen.Service.PassengerApi
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             GlobalDiagnosticsContext.Set("LogConnection", Configuration.GetConnectionString("LogConnection"));
 
-            services.AddScoped<IPassengerRepository, PassengerRepository>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
-            services.AddScoped<IPassengerManager, OfflinePassengerManager>();
-            services.AddTransient<IPassengerManager, OnlinePassengerManager>();
+            services.AddScoped<IPassengerRepository, PassengerRepository>();
+            services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             services.AddScoped<IPassengerOperation, PassengerOperation>();
 
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddTransient<IPassengerManager, OfflinePassengerManager>();
+            services.AddTransient<IPassengerManager, OnlinePassengerManager>();
 
             services.AddMvc();
 
@@ -105,7 +106,7 @@ namespace Gozen.Service.PassengerApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, GozenDbContext gozenDbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, GozenDbContext gozenDbContext*/)
         {
             // Migrate at Start
             //gozenDbContext.Database.Migrate();
@@ -123,7 +124,10 @@ namespace Gozen.Service.PassengerApi
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             //app.UseMvc();
 
             app.UseCors();

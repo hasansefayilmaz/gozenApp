@@ -11,5 +11,7 @@ namespace Gozen.Business.Passenger.Strategy
         Task<bool> AddNewPassenger(PassengerDto p);
         Task<bool> ChangePassengerInfo(PassengerDto p);
         Task<bool> RemovePassenger(int id);
+
+        Task<List<DocumentTypeDto>> GetDocumentTypes();
     }
 }

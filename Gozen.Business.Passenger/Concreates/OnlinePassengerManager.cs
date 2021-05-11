@@ -11,10 +11,12 @@ namespace Gozen.Business.Passenger.Concreates
     public class OnlinePassengerManager : IPassengerManager
     {
         private readonly IPassengerRepository _passengerRepository;
+        private readonly IDocumentTypeRepository _documentTypeRepository;
 
-        public OnlinePassengerManager(IPassengerRepository passengerRepository)
+        public OnlinePassengerManager(IPassengerRepository passengerRepository, IDocumentTypeRepository documentTypeRepository)
         {
             _passengerRepository = passengerRepository;
+            _documentTypeRepository = documentTypeRepository;
         }
 
         public async Task<List<PassengerDto>> ListPassengers()
@@ -23,11 +25,12 @@ namespace Gozen.Business.Passenger.Concreates
             {
                 var passengers = await _passengerRepository.GetAllAsync();
                 List<PassengerDto> result = new();
-                foreach (var passenger in passengers)
-                {
-                    var passengerDto = passenger.Adapt(new PassengerDto());
-                    result.Add(passengerDto);
-                }
+                if (passengers != null)
+                    foreach (var passenger in passengers)
+                    {
+                        var passengerDto = passenger.Adapt(new PassengerDto());
+                        result.Add(passengerDto);
+                    }
 
                 return result;
             }
@@ -43,13 +46,14 @@ namespace Gozen.Business.Passenger.Concreates
             try
             {
                 var passenger = await _passengerRepository.GetByIdAsync(id);
-                return passenger.Adapt(new PassengerDto());
+                if (passenger != null) return passenger.Adapt(new PassengerDto());
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+            return null;
         }
 
         public async Task<bool> AddNewPassenger(PassengerDto p)
@@ -57,7 +61,7 @@ namespace Gozen.Business.Passenger.Concreates
             try
             {
                 var newPassenger = p.Adapt(new Data.Entity.Passenger());
-                return await _passengerRepository.CreateAsync(newPassenger);
+                return newPassenger != null && await _passengerRepository.CreateAsync(newPassenger);
             }
             catch (Exception e)
             {
@@ -74,7 +78,7 @@ namespace Gozen.Business.Passenger.Concreates
                 if (passenger != null)
                 {
                     var updatedPassenger = p.Adapt(passenger);
-                    return await _passengerRepository.UpdateAsync(updatedPassenger);
+                    return updatedPassenger != null && await _passengerRepository.UpdateAsync(updatedPassenger);
                 }
 
                 return false;
@@ -98,6 +102,28 @@ namespace Gozen.Business.Passenger.Concreates
                 }
 
                 return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<DocumentTypeDto>> GetDocumentTypes()
+        {
+            try
+            {
+                var documentTypes = await _documentTypeRepository.GetAllAsync();
+                List<DocumentTypeDto> result = new();
+                if (documentTypes != null)
+                    foreach (var documentType in documentTypes)
+                    {
+                        var documentTypeDto = documentType.Adapt(new DocumentTypeDto());
+                        result.Add(documentTypeDto);
+                    }
+
+                return result;
             }
             catch (Exception e)
             {

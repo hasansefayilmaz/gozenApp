@@ -1,4 +1,5 @@
-﻿@model Gozen.Models.DTO.PassengerDto
+﻿@using Gozen.Models.DTO.Enums
+@model Gozen.Models.DTO.PassengerDto
 
 @{
     ViewData["Title"] = "Details";
@@ -8,14 +9,14 @@
 
 <div>
     <h4>UniqePassengerId : @Model.Id</h4>
-    <hr/>
+    <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
+        @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>*@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -32,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Gender)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
+            @Html.DisplayFor(model => Html.GetEnumSelectList<Gender>().ToList().Find(x => x.Value == model.Gender.ToString()).Text)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DocumentType)
@@ -61,6 +62,10 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
-    <a asp-action="Index">Back to List</a>
+    @Html.RouteLink("Back to List", "Index", new { scenario = ViewBag.Scenario }, new { @class = "btn btn-primary my-2" }) |
+    @Html.RouteLink("Edit", "Edit", new { scenario = ViewBag.Scenario, id = Model.Id }, new { @class = "btn btn-dark my-2" }) |
+    @Html.RouteLink("Delete", "Delete", new { scenario = ViewBag.Scenario, id = Model.Id }, new { @class = "btn btn-danger my-2" })
+
+    @*@Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
+        <a asp-action="Index">Back to List</a>*@
 </div>
