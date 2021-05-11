@@ -24,7 +24,7 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
                 constraints: table => { table.PrimaryKey("PK_DocumentType", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                "PassengerDto",
+                "Passenger",
                 table => new
                 {
                     Id = table.Column<int>("int", nullable: false)
@@ -50,25 +50,25 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
 
             migrationBuilder.InsertData(
                 "DocumentType",
-                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new[] { "Id", "IsActive", "IssueDate", "Type" },
                 new object[]
                     {1, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(4350), "Pasaport"});
 
             migrationBuilder.InsertData(
                 "DocumentType",
-                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new[] { "Id", "IsActive", "IssueDate", "Type" },
                 new object[]
                     {2, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7177), "Visa"});
 
             migrationBuilder.InsertData(
                 "DocumentType",
-                new[] {"Id", "IsActive", "IssueDate", "Type"},
+                new[] { "Id", "IsActive", "IssueDate", "Type" },
                 new object[]
                     {3, true, new DateTime(2021, 5, 6, 21, 19, 47, 886, DateTimeKind.Utc).AddTicks(7192), "Travel"});
 
             migrationBuilder.InsertData(
-                "PassengerDto",
-                new[] {"Id", "DocumentNumber", "DocumentTypeId", "Gender", "IsActive", "IssueDate", "Name", "Surname"},
+                "Passenger",
+                new[] { "Id", "DocumentNumber", "DocumentTypeId", "Gender", "IsActive", "IssueDate", "Name", "Surname" },
                 new object[,]
                 {
                     {
@@ -99,14 +99,14 @@ namespace Gozen.Data.Migrations.GozenDBMigrations
 
             migrationBuilder.CreateIndex(
                 "IX_Passenger_DocumentTypeId",
-                "PassengerDto",
+                "Passenger",
                 "DocumentTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "PassengerDto");
+                "Passenger");
 
             migrationBuilder.DropTable(
                 "DocumentType");
