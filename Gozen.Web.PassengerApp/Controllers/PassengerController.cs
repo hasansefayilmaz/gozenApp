@@ -1,17 +1,18 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Gozen.Models.DTO;
-using Gozen.Models.DTO.Enums;
 using Gozen.Web.PassengerApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace Gozen.Web.PassengerApp.Controllers
 {
@@ -34,25 +35,29 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
 
                 var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Index/");
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
                 ViewBag.Scenario = scenario;
 
-                var result = JsonConvert.DeserializeObject<List<PassengerDto>>(response.Content.ReadAsStringAsync().Result);
+                var result =
+                    JsonConvert.DeserializeObject<List<PassengerDto>>(response.Content.ReadAsStringAsync().Result);
                 return View(result);
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -62,14 +67,18 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                var response =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
                 ViewBag.Scenario = scenario;
@@ -80,7 +89,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -90,25 +99,33 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
 
-                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                var response =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                var dResponse = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                var dResponse =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
                 if (!dResponse.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
-                        ErrorMessage = dResponse.RequestMessage != null ? dResponse.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorMessage = dResponse.RequestMessage != null
+                            ? dResponse.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                ViewBag.DocumentTypes = JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
+                ViewBag.DocumentTypes =
+                    JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
                 ViewBag.Scenario = scenario;
 
                 return View();
@@ -116,7 +133,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -127,24 +144,28 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
 
                 var response = await client.PostAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Create/",
                     new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
-                return result ? RedirectToAction("Index", "Passenger", new { scenario = scenario }) : View(passenger);
+                var result =
+                    Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                return result ? RedirectToAction("Index", "Passenger", new {scenario}) : View(passenger);
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -154,25 +175,33 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
 
-                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
+                var response =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                var dResponse = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
+                var dResponse =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/GetDocumentTypes/");
                 if (!dResponse.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)dResponse.StatusCode + " " + dResponse.ReasonPhrase,
-                        ErrorMessage = dResponse.RequestMessage != null ? dResponse.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) dResponse.StatusCode + " " + dResponse.ReasonPhrase,
+                        ErrorMessage = dResponse.RequestMessage != null
+                            ? dResponse.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                ViewBag.DocumentTypes = JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
+                ViewBag.DocumentTypes =
+                    JsonConvert.DeserializeObject<List<DocumentTypeDto>>(dResponse.Content.ReadAsStringAsync().Result);
                 ViewBag.Scenario = scenario;
 
                 var result = JsonConvert.DeserializeObject<PassengerDto>(response.Content.ReadAsStringAsync().Result);
@@ -182,7 +211,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -193,24 +222,29 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
 
-                var response = await client.PutAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Edit/" + passenger.Id,
+                var response = await client.PutAsync(
+                    client.BaseAddress + "api/" + scenario + "/Passenger/Edit/" + passenger.Id,
                     new StringContent(JsonConvert.SerializeObject(passenger), Encoding.UTF8, "application/json"));
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
-                return result ? RedirectToAction("Index", "Passenger", new { scenario = scenario }) : View(passenger);
+                var result =
+                    Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                return result ? RedirectToAction("Index", "Passenger", new {scenario}) : View(passenger);
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -220,15 +254,18 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                var response =
+                    await client.GetAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Details/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
                 ViewBag.Scenario = scenario;
@@ -239,7 +276,7 @@ namespace Gozen.Web.PassengerApp.Controllers
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
 
@@ -249,25 +286,30 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                HttpClient client = new() { BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection")) };
-                var response = await client.DeleteAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Delete/" + id);
+                HttpClient client = new()
+                    {BaseAddress = new Uri(Configuration.GetConnectionString("DefaultConnection"))};
+                var response =
+                    await client.DeleteAsync(client.BaseAddress + "api/" + scenario + "/Passenger/Delete/" + id);
 
                 if (!response.IsSuccessStatusCode)
                     return View("Error", new ErrorViewModel
                     {
-                        ErrorCode = (int)response.StatusCode + " " + response.ReasonPhrase,
-                        ErrorMessage = response.RequestMessage != null ? response.RequestMessage.ToString() : "No message delivered by the service."
+                        ErrorCode = (int) response.StatusCode + " " + response.ReasonPhrase,
+                        ErrorMessage = response.RequestMessage != null
+                            ? response.RequestMessage.ToString()
+                            : "No message delivered by the service."
                     });
 
-                var result = Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
+                var result =
+                    Convert.ToBoolean(JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result));
                 return result
-                    ? RedirectToAction("Index", "Passenger", new { scenario = scenario })
-                    : RedirectToAction("Delete", "Passenger", new { scenario = scenario, id = id });
+                    ? RedirectToAction("Index", "Passenger", new {scenario})
+                    : RedirectToAction("Delete", "Passenger", new {scenario, id});
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception.Message, exception);
-                return View("Error", new ErrorViewModel { ErrorMessage = exception.Message });
+                return View("Error", new ErrorViewModel {ErrorMessage = exception.Message});
             }
         }
     }

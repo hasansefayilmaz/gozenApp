@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Threading.Tasks;
 using Gozen.Business.Passenger;
 using Gozen.Business.Passenger.Concreates;
@@ -10,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
+#endregion
+
 namespace Gozen.Service.PassengerApi.Controllers
 {
     [ApiController]
@@ -17,14 +21,15 @@ namespace Gozen.Service.PassengerApi.Controllers
     [ModelValidation]
     public class PassengerController : Controller
     {
+        private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly ILogger<PassengerController> _logger;
         private readonly IMemoryCache _memoryCache;
         private readonly IPassengerRepository _passengerRepository;
-        private readonly IDocumentTypeRepository _documentTypeRepository;
 
         private IPassengerOperation _passengerOperation;
 
-        public PassengerController(IPassengerRepository passengerRepository, IDocumentTypeRepository documentTypeRepository, IMemoryCache memoryCache,
+        public PassengerController(IPassengerRepository passengerRepository,
+            IDocumentTypeRepository documentTypeRepository, IMemoryCache memoryCache,
             ILogger<PassengerController> logger)
         {
             _passengerRepository = passengerRepository;
@@ -32,7 +37,6 @@ namespace Gozen.Service.PassengerApi.Controllers
             _memoryCache = memoryCache;
             _logger = logger;
         }
-
 
 
         [HttpGet]
@@ -44,7 +48,9 @@ namespace Gozen.Service.PassengerApi.Controllers
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.ListPassengers());
                     }
                     catch (Exception ex)
@@ -77,7 +83,9 @@ namespace Gozen.Service.PassengerApi.Controllers
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.ShowPassengerInfo(id));
                     }
                     catch (Exception ex)
@@ -110,7 +118,9 @@ namespace Gozen.Service.PassengerApi.Controllers
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.AddNewPassenger(obj));
                     }
                     catch (Exception ex)
@@ -143,7 +153,9 @@ namespace Gozen.Service.PassengerApi.Controllers
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.ChangePassengerInfo(obj));
                     }
                     catch (Exception ex)
@@ -176,7 +188,9 @@ namespace Gozen.Service.PassengerApi.Controllers
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.RemovePassenger(id));
                     }
                     catch (Exception ex)
@@ -203,14 +217,15 @@ namespace Gozen.Service.PassengerApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDocumentTypes(string scenario)
         {
-
             switch (scenario)
             {
                 case Scenario.Online:
 
                     try
                     {
-                        _passengerOperation = new PassengerOperation(new OnlinePassengerManager(_passengerRepository, _documentTypeRepository));
+                        _passengerOperation =
+                            new PassengerOperation(new OnlinePassengerManager(_passengerRepository,
+                                _documentTypeRepository));
                         return Ok(await _passengerOperation.GetDocumentTypes());
                     }
                     catch (Exception ex)

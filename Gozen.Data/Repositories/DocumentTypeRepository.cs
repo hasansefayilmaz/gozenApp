@@ -1,5 +1,9 @@
-﻿using Gozen.Data.Core;
+﻿#region Usings
+
+using Gozen.Data.Core;
 using Gozen.Data.Entity;
+
+#endregion
 
 namespace Gozen.Data.Repositories
 {

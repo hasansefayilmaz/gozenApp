@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gozen.Business.Passenger.Strategy;
@@ -6,14 +8,17 @@ using Gozen.Data.Repositories;
 using Gozen.Models.DTO;
 using Mapster;
 
+#endregion
+
 namespace Gozen.Business.Passenger.Concreates
 {
     public class OnlinePassengerManager : IPassengerManager
     {
-        private readonly IPassengerRepository _passengerRepository;
         private readonly IDocumentTypeRepository _documentTypeRepository;
+        private readonly IPassengerRepository _passengerRepository;
 
-        public OnlinePassengerManager(IPassengerRepository passengerRepository, IDocumentTypeRepository documentTypeRepository)
+        public OnlinePassengerManager(IPassengerRepository passengerRepository,
+            IDocumentTypeRepository documentTypeRepository)
         {
             _passengerRepository = passengerRepository;
             _documentTypeRepository = documentTypeRepository;
@@ -53,6 +58,7 @@ namespace Gozen.Business.Passenger.Concreates
                 Console.WriteLine(e);
                 throw;
             }
+
             return null;
         }
 

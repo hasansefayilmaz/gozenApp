@@ -1,3 +1,5 @@
+#region Usings
+
 using System;
 using System.IO;
 using Microsoft.AspNetCore;
@@ -7,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+
+#endregion
 
 namespace Gozen.Web.PassengerApp
 {

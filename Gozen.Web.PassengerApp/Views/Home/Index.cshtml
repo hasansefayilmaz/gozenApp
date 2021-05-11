@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
-@using System.Net
-@using System.Net.Http
-@using Gozen.Models.DTO.Statics
-@using Microsoft.AspNetCore.Mvc.ModelBinding
+﻿@using Gozen.Models.DTO.Statics
 @{
     ViewData["Title"] = "Online";
 }
@@ -13,8 +9,8 @@
         <h1 class="jumbotron-heading">Passenger Application</h1>
         <p class="lead text-muted">Please select the scenario you want to access while using the system .</p>
         <p>
-            @Html.RouteLink("Offline", "Index", new { scenario = Scenario.Offline }, new { @class = "btn btn-secondary my-2" })
-            @Html.RouteLink("Online", "Index", new { scenario = Scenario.Online }, new { @class = "btn btn-primary my-2" })
+            @Html.RouteLink("Offline", "Index", new {scenario = Scenario.Offline}, new {@class = "btn btn-secondary my-2"})
+            @Html.RouteLink("Online", "Index", new {scenario = Scenario.Online}, new {@class = "btn btn-primary my-2"})
         </p>
     </div>
 </div>

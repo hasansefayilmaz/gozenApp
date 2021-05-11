@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Diagnostics;
 using Gozen.Web.PassengerApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace Gozen.Web.PassengerApp.Controllers
 {
@@ -34,7 +38,8 @@ namespace Gozen.Web.PassengerApp.Controllers
         {
             try
             {
-                return View(new ErrorViewModel { ErrorMessage = Activity.Current?.DisplayName ?? HttpContext.TraceIdentifier });
+                return View(new ErrorViewModel
+                    {ErrorMessage = Activity.Current?.DisplayName ?? HttpContext.TraceIdentifier});
             }
             catch (Exception exception)
             {

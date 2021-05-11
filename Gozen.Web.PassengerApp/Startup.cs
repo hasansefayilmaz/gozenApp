@@ -1,3 +1,5 @@
+#region Usings
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
+
+#endregion
 
 namespace Gozen.Web.PassengerApp
 {
@@ -22,7 +26,7 @@ namespace Gozen.Web.PassengerApp
         public void ConfigureServices(IServiceCollection services)
         {
             GlobalDiagnosticsContext.Set("LogConnection", Configuration.GetConnectionString("LogConnection"));
-            
+
             services.AddMvc();
 
             services.AddControllersWithViews();
@@ -37,7 +41,6 @@ namespace Gozen.Web.PassengerApp
             services.AddLogging();
 
             services.AddCors();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,7 +7,7 @@
 
 <h1>Create</h1>
 
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label asp-for="DocumentTypeId" class="control-label">Document Type</label>
                 <select asp-for="DocumentTypeId" class="form-control"
-                        asp-items="@(new SelectList(ViewBag.DocumentTypes,"Id","Type"))">
+                        asp-items="@(new SelectList(ViewBag.DocumentTypes, "Id", "Type"))">
                     <option selected="selected" value="">Choose Document Type</option>
                 </select>
                 <span asp-validation-for="DocumentTypeId" class="text-danger"></span>
@@ -43,8 +43,8 @@
                 <span asp-validation-for="DocumentNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.RouteLink("Back to List", "Index", new { scenario = ViewBag.Scenario }, new { @class = "btn btn-primary my-2" }) |
-                <input type="submit" value="Create" class="btn btn-success" />
+                @Html.RouteLink("Back to List", "Index", new {scenario = ViewBag.Scenario}, new {@class = "btn btn-primary my-2"}) |
+                <input type="submit" value="Create" class="btn btn-success"/>
                 @*<a asp-action="Index">Back to List</a>*@
             </div>
         </form>

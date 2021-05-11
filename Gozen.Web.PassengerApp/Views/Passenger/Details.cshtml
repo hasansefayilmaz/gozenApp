@@ -9,7 +9,7 @@
 
 <div>
     <h4>UniqePassengerId : @Model.Id</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         @*<dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Id)
@@ -62,9 +62,9 @@
     </dl>
 </div>
 <div>
-    @Html.RouteLink("Back to List", "Index", new { scenario = ViewBag.Scenario }, new { @class = "btn btn-primary my-2" }) |
-    @Html.RouteLink("Edit", "Edit", new { scenario = ViewBag.Scenario, id = Model.Id }, new { @class = "btn btn-dark my-2" }) |
-    @Html.RouteLink("Delete", "Delete", new { scenario = ViewBag.Scenario, id = Model.Id }, new { @class = "btn btn-danger my-2" })
+    @Html.RouteLink("Back to List", "Index", new {scenario = ViewBag.Scenario}, new {@class = "btn btn-primary my-2"}) |
+    @Html.RouteLink("Edit", "Edit", new {scenario = ViewBag.Scenario, id = Model.Id}, new {@class = "btn btn-dark my-2"}) |
+    @Html.RouteLink("Delete", "Delete", new {scenario = ViewBag.Scenario, id = Model.Id}, new {@class = "btn btn-danger my-2"})
 
     @*@Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
         <a asp-action="Index">Back to List</a>*@

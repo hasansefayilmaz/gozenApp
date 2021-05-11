@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+
+#endregion
 
 namespace Gozen.Data.Migrations.GozenDBMigrations
 {

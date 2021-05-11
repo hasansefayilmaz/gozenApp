@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region Usings
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+
+#endregion
 
 namespace Gozen.Data.Entity
 {

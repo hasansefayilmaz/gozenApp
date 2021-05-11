@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Gozen.Data.Entity.Base;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Gozen.Data.Core
 {

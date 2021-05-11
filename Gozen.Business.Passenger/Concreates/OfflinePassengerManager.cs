@@ -1,10 +1,14 @@
-﻿using Gozen.Business.Passenger.Strategy;
-using Gozen.Models.DTO;
-using Mapster;
-using Microsoft.Extensions.Caching.Memory;
+﻿#region Usings
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gozen.Business.Passenger.Strategy;
+using Gozen.Models.DTO;
+using Mapster;
+using Microsoft.Extensions.Caching.Memory;
+
+#endregion
 
 namespace Gozen.Business.Passenger.Concreates
 {
@@ -17,19 +21,22 @@ namespace Gozen.Business.Passenger.Concreates
         public OfflinePassengerManager(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
+
             #region Dummy Data
 
             #region DocumentTypeDto
 
             if (!_memoryCache.TryGetValue(DocumentTypeKey, out List<DocumentTypeDto> dCache))
             {
-                dCache = new()
+                dCache = new List<DocumentTypeDto>()
                 {
-                    new DocumentTypeDto { Id = 1, Type = "Passport", IssueDate = DateTime.UtcNow, IsActive = true },
-                    new DocumentTypeDto { Id = 2, Type = "Visa", IssueDate = DateTime.UtcNow, IsActive = true },
-                    new DocumentTypeDto { Id = 3, Type = "Travel", IssueDate = DateTime.UtcNow, IsActive = true }
+                    new DocumentTypeDto {Id = 1, Type = "Passport", IssueDate = DateTime.UtcNow, IsActive = true},
+                    new DocumentTypeDto {Id = 2, Type = "Visa", IssueDate = DateTime.UtcNow, IsActive = true},
+                    new DocumentTypeDto {Id = 3, Type = "Travel", IssueDate = DateTime.UtcNow, IsActive = true}
                 };
-                _memoryCache.Set(DocumentTypeKey, dCache, new MemoryCacheEntryOptions { Priority = CacheItemPriority.NeverRemove, AbsoluteExpiration = DateTime.Now.AddMinutes(30), });
+                _memoryCache.Set(DocumentTypeKey, dCache,
+                    new MemoryCacheEntryOptions
+                        {Priority = CacheItemPriority.NeverRemove, AbsoluteExpiration = DateTime.Now.AddMinutes(30)});
             }
 
             #endregion
@@ -38,19 +45,34 @@ namespace Gozen.Business.Passenger.Concreates
 
             if (!_memoryCache.TryGetValue(PassengerKey, out List<PassengerDto> pCache))
             {
-                pCache = new()
+                pCache = new List<PassengerDto>()
                 {
-                    new PassengerDto { Id = 1, Name = "Ofline_01", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1, DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true },
-                    new PassengerDto { Id = 2, Name = "Ofline_02", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1, DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true },
-                    new PassengerDto { Id = 3, Name = "Ofline_03", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1, DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true },
-                    new PassengerDto { Id = 4, Name = "Ofline_04", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1, DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true },
+                    new PassengerDto
+                    {
+                        Id = 1, Name = "Ofline_01", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1,
+                        DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true
+                    },
+                    new PassengerDto
+                    {
+                        Id = 2, Name = "Ofline_02", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1,
+                        DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true
+                    },
+                    new PassengerDto
+                    {
+                        Id = 3, Name = "Ofline_03", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1,
+                        DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true
+                    },
+                    new PassengerDto
+                    {
+                        Id = 4, Name = "Ofline_04", Surname = "Surname_01", Gender = 0, DocumentTypeId = 1,
+                        DocumentNumber = 1111, IssueDate = DateTime.UtcNow, IsActive = true
+                    }
                 };
-                _memoryCache.Set(PassengerKey, pCache, new MemoryCacheEntryOptions { Priority = CacheItemPriority.NeverRemove });
+                _memoryCache.Set(PassengerKey, pCache,
+                    new MemoryCacheEntryOptions {Priority = CacheItemPriority.NeverRemove});
 
                 foreach (var dummyPassenger in pCache)
-                {
                     dummyPassenger.DocumentType = dCache.Find(c => c.Id == dummyPassenger.DocumentTypeId);
-                }
             }
 
             #endregion
@@ -99,6 +121,7 @@ namespace Gozen.Business.Passenger.Concreates
                     var passengerDocumentType = dCache.Find(c => c.Id == passenger.DocumentTypeId);
                     if (passengerDocumentType != null) passenger.DocumentType = passengerDocumentType;
                 }
+
                 return passenger;
             }
             catch (Exception e)

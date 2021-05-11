@@ -1,5 +1,9 @@
-﻿using Gozen.Data.Entity;
+﻿#region Usings
+
+using Gozen.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Gozen.Data
 {
@@ -27,9 +31,9 @@ namespace Gozen.Data
             #region Document
 
             builder.Entity<DocumentType>().HasData(
-                new DocumentType { Id = 1, Type = "Pasaport" },
-                new DocumentType { Id = 2, Type = "Visa" },
-                new DocumentType { Id = 3, Type = "Travel" }
+                new DocumentType {Id = 1, Type = "Pasaport"},
+                new DocumentType {Id = 2, Type = "Visa"},
+                new DocumentType {Id = 3, Type = "Travel"}
             );
             builder.Entity<DocumentType>().Property(p => p.Id).UseIdentityColumn();
 

@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#region Usings
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gozen.Business.Passenger.Strategy;
 using Gozen.Models.DTO;
+
+#endregion
 
 namespace Gozen.Business.Passenger
 {
@@ -14,7 +18,6 @@ namespace Gozen.Business.Passenger
         Task<bool> RemovePassenger(int passengerId);
 
         Task<List<DocumentTypeDto>> GetDocumentTypes();
-
     }
 
 

@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region Usings
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gozen.Models.DTO;
+
+#endregion
 
 namespace Gozen.Business.Passenger.Strategy
 {
